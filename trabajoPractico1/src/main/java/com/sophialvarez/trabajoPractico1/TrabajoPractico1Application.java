@@ -30,17 +30,20 @@ public class TrabajoPractico1Application {
 	@Autowired
 	DomicilioRepository domicilioRepository;
 
+	@Autowired
+	ProductoRepository productoRepository;
+
 
 	@Bean
-	CommandLineRunner init(DomicilioRepository domicilioRepo){
+	CommandLineRunner init(){
 		return args -> {
 			Rubro rubro1 = Rubro.builder()
-					.denominacion("Consumible")
+					.denominacion("Bebida")
 					.build();
 
 			Producto producto1 = Producto.builder()
-					.denominacion("Consumible")
-					.foto("nafta.png")
+					.denominacion("Bebida")
+					.foto("CocaCola.png")
 					.tipo(TipoProducto.INSUMO)
 					.precioCompra(100.0)
 					.precioVenta(150.0)
@@ -50,13 +53,35 @@ public class TrabajoPractico1Application {
 					.tiempoEstimadoCocina(0)
 					.unidadMedida("litros")
 					.build();
+
+			Producto producto2 = Producto.builder()
+					.denominacion("Bebida")
+					.foto("Fanta.png")
+					.tipo(TipoProducto.INSUMO)
+					.precioCompra(90.0)
+					.precioVenta(120.0)
+					.receta(".")
+					.stockActual(40)
+					.stockMinimo(5)
+					.tiempoEstimadoCocina(0)
+					.unidadMedida("litros")
+					.build();
 			rubro1.addProductos(producto1);
+			rubro1.addProductos(producto2);
 			rubroRepository.save(rubro1);
+
+
 
 			DetallesPedido detallePedido1 = DetallesPedido.builder()
 					.cantidad(1)
 					.producto(producto1)
 					.subtotal(150.0)
+					.build();
+
+			DetallesPedido detallePedido2 = DetallesPedido.builder()
+					.cantidad(2)
+					.producto(producto1)
+					.subtotal(300.0)
 					.build();
 
 			Pedido pedido1 = Pedido.builder()
@@ -67,6 +92,7 @@ public class TrabajoPractico1Application {
 					.tipoEnvio(TipoEnvio.RETIRA)
 					.build();
 			pedido1.addDetallePedido(detallePedido1);
+			pedido1.addDetallePedido(detallePedido2);
 
 
 			Factura factura = Factura.builder()
@@ -104,7 +130,12 @@ public class TrabajoPractico1Application {
 					.localidad("Las Heras")
 					.build();
 			domicilio.addPedido(pedido1);
+			domicilio.setCliente(cliente);
 			domicilioRepository.save(domicilio);
+
+			domicilio.mostrarPedido();
+			usuario.mostrarUsuarioYPedidos();
+			rubro1.mostrarRubro();
 		};
 	}
 }

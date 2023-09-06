@@ -1,6 +1,7 @@
 package com.sophialvarez.trabajoPractico1.entities;
 
 import com.sophialvarez.trabajoPractico1.enums.Estado;
+import com.sophialvarez.trabajoPractico1.enums.FormaPago;
 import com.sophialvarez.trabajoPractico1.enums.TipoEnvio;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,12 +37,28 @@ public class Pedido extends BaseEntidad{
     @JoinColumn(name = "factura_id")
     private Factura factura;
 
-
-    public void addDetallesPedido(DetallesPedido dp){
-        detallesPedidos.add(dp);
-    }
-
     public void addDetallePedido(DetallesPedido detallePedido1) {
         detallesPedidos.add(detallePedido1);
+    }
+
+
+    public void mostrarDetallesPedido(){
+        for (DetallesPedido dp: detallesPedidos) {
+            System.out.println("    Detalle del pedido n°" + dp.getId());
+            System.out.println("    Cantidad:" + dp.getCantidad());
+            System.out.println("    Subtotal:" + dp.getSubtotal());
+            dp.mostrarProducto();
+        }
+    }
+
+    public void mostrarFactura(){
+        System.out.println("    ------------------------");
+        System.out.println("    Factura: ");
+        System.out.println("    ------------------------");
+        System.out.println("        Fecha: " + factura.getFecha());
+        System.out.println("        Numero: " + factura.getNumero());
+        System.out.println("        Descuento: " + factura.getDescuento());
+        System.out.println("        Forma de pago: " + factura.getFormaPago());
+        System.out.println("        Total: " + factura.getTotal());
     }
 }
